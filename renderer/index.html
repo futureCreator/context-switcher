@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Context Switcher</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600&display=swap" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app">
+    <!-- Editor 1 -->
+    <div class="editor-pane" id="editor-pane-1">
+      <div class="editor-header">
+        <span class="editor-filename" id="editor-filename-1">비어있음</span>
+        <span class="save-status" id="save-status-1"></span>
+      </div>
+      <div class="editor-drop-zone" id="editor-drop-1" data-editor="1">
+        <div class="editor-empty-state" id="editor-empty-1">
+          <div class="editor-empty-icon">⊕</div>
+          <div class="editor-empty-label">아이템을 여기로 드래그하세요</div>
+        </div>
+        <textarea class="editor-textarea" id="editor-textarea-1" spellcheck="false"></textarea>
+        <div class="drag-overlay" id="drag-overlay-1"></div>
+      </div>
+    </div>
+
+    <!-- Editor 2 -->
+    <div class="editor-pane" id="editor-pane-2">
+      <div class="editor-header">
+        <span class="editor-filename" id="editor-filename-2">비어있음</span>
+        <span class="save-status" id="save-status-2"></span>
+      </div>
+      <div class="editor-drop-zone" id="editor-drop-2" data-editor="2">
+        <div class="editor-empty-state" id="editor-empty-2">
+          <div class="editor-empty-icon">⊕</div>
+          <div class="editor-empty-label">아이템을 여기로 드래그하세요</div>
+        </div>
+        <textarea class="editor-textarea" id="editor-textarea-2" spellcheck="false"></textarea>
+        <div class="drag-overlay" id="drag-overlay-2"></div>
+      </div>
+    </div>
+
+    <!-- Item Pane (Sidebar) -->
+    <div id="item-pane">
+      <div id="folder-tab-bar">
+        <button class="folder-tab active" data-folder="home">
+          <span class="folder-tab-emoji">🏠</span>
+          <span class="folder-tab-label">홈</span>
+        </button>
+        <button class="folder-tab" data-folder="work">
+          <span class="folder-tab-emoji">💼</span>
+          <span class="folder-tab-label">업무</span>
+        </button>
+        <button class="folder-tab" data-folder="idea">
+          <span class="folder-tab-emoji">💡</span>
+          <span class="folder-tab-label">아이디어</span>
+        </button>
+        <button class="folder-tab" data-folder="memo">
+          <span class="folder-tab-emoji">📋</span>
+          <span class="folder-tab-label">메모</span>
+        </button>
+      </div>
+      <div id="item-input-area">
+        <input
+          type="text"
+          id="item-input"
+          placeholder="새 아이템 입력 후 Enter"
+          autocomplete="off"
+          spellcheck="false"
+        />
+      </div>
+      <div id="item-list-container">
+        <div id="item-list"></div>
+      </div>
+      <div id="archive-btn-area">
+        <button id="archive-btn">아카이브 보기</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Emoji Picker -->
+  <div class="emoji-picker hidden" id="emoji-picker"></div>
+
+  <!-- Archive Modal -->
+  <div class="modal-backdrop hidden" id="archive-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <span class="modal-title">아카이브</span>
+        <button class="modal-close" id="archive-modal-close">✕</button>
+      </div>
+      <div class="modal-body" id="archive-list"></div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

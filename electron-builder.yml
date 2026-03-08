@@ -1,0 +1,10 @@
+appId: com.contextswitch.app
+productName: ContextSwitcher
+directories:
+  output: dist
+win:
+  target:
+    - target: portable
+      arch: [x64]
+portable:
+  artifactName: ContextSwitcher.exe
