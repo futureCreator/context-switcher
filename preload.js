@@ -1,4 +1,4 @@
-const { contextBridge, ipcRenderer } = require('electron');
+const { contextBridge, ipcRenderer, shell } = require('electron');
 
 contextBridge.exposeInMainWorld('api', {
   listNotes:   (folder)                    => ipcRenderer.invoke('fs:list-notes', folder),
@@ -7,6 +7,16 @@ contextBridge.exposeInMainWorld('api', {
   writeFile:   (filename, folder, content) => ipcRenderer.invoke('fs:write-file', filename, folder, content),
   createFile:  (title, folder)             => ipcRenderer.invoke('fs:create-file', title, folder),
   archiveFile: (filename, folder)          => ipcRenderer.invoke('fs:archive-file', filename, folder),
-  restoreFile: (filename, targetFolder)    => ipcRenderer.invoke('fs:restore-file', filename, targetFolder),
-  renameFile:  (oldFilename, newTitle, folder) => ipcRenderer.invoke('fs:rename-file', oldFilename, newTitle, folder),
+  restoreFile:      (filename, targetFolder)    => ipcRenderer.invoke('fs:restore-file', filename, targetFolder),
+  deleteArchiveFile: (filename)                 => ipcRenderer.invoke('fs:delete-archive-file', filename),
+  moveFile:        (filename, fromFolder, toFolder) => ipcRenderer.invoke('fs:move-file', filename, fromFolder, toFolder),
+  renameFile:      (oldFilename, newTitle, folder) => ipcRenderer.invoke('fs:rename-file', oldFilename, newTitle, folder),
+  ensureDailyNote: ()                              => ipcRenderer.invoke('fs:ensure-daily-note'),
+  config: {
+    get: (key)        => ipcRenderer.invoke('config:get', key),
+    set: (key, value) => ipcRenderer.invoke('config:set', key, value),
+  },
+  aiOrganize:  (content) => ipcRenderer.invoke('ai:organize', content),
+  aiExpand:    (items)   => ipcRenderer.invoke('ai:expand', items),
+  openExternal: (url) => shell.openExternal(url),
 });

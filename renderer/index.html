@@ -6,7 +6,7 @@
   <title>Context Switcher</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;600&display=swap" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -14,12 +14,20 @@
     <!-- Editor 1 -->
     <div class="editor-pane" id="editor-pane-1">
       <div class="editor-header">
+        <button class="ai-organize-btn" id="ai-organize-btn-1" title="AI로 노트 정리">정리</button>
         <span class="editor-filename" id="editor-filename-1">비어있음</span>
         <span class="save-status" id="save-status-1"></span>
+        <button class="pin-btn" id="pin-btn-1" title="고정">
+          <span class="pin-toggle-track"><span class="pin-toggle-thumb"></span></span>
+        </button>
       </div>
       <div class="editor-drop-zone" id="editor-drop-1" data-editor="1">
         <div class="editor-empty-state" id="editor-empty-1">
-          <div class="editor-empty-icon">⊕</div>
+          <div class="editor-empty-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+          </div>
           <div class="editor-empty-label">아이템을 여기로 드래그하세요</div>
         </div>
         <textarea class="editor-textarea" id="editor-textarea-1" spellcheck="false"></textarea>
@@ -30,12 +38,20 @@
     <!-- Editor 2 -->
     <div class="editor-pane" id="editor-pane-2">
       <div class="editor-header">
+        <button class="ai-organize-btn" id="ai-organize-btn-2" title="AI로 노트 정리">정리</button>
         <span class="editor-filename" id="editor-filename-2">비어있음</span>
         <span class="save-status" id="save-status-2"></span>
+        <button class="pin-btn" id="pin-btn-2" title="고정">
+          <span class="pin-toggle-track"><span class="pin-toggle-thumb"></span></span>
+        </button>
       </div>
       <div class="editor-drop-zone" id="editor-drop-2" data-editor="2">
         <div class="editor-empty-state" id="editor-empty-2">
-          <div class="editor-empty-icon">⊕</div>
+          <div class="editor-empty-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+          </div>
           <div class="editor-empty-label">아이템을 여기로 드래그하세요</div>
         </div>
         <textarea class="editor-textarea" id="editor-textarea-2" spellcheck="false"></textarea>
@@ -46,22 +62,24 @@
     <!-- Item Pane (Sidebar) -->
     <div id="item-pane">
       <div id="folder-tab-bar">
-        <button class="folder-tab active" data-folder="home">
-          <span class="folder-tab-emoji">🏠</span>
-          <span class="folder-tab-label">홈</span>
-        </button>
-        <button class="folder-tab" data-folder="work">
-          <span class="folder-tab-emoji">💼</span>
-          <span class="folder-tab-label">업무</span>
-        </button>
-        <button class="folder-tab" data-folder="idea">
-          <span class="folder-tab-emoji">💡</span>
-          <span class="folder-tab-label">아이디어</span>
-        </button>
-        <button class="folder-tab" data-folder="memo">
-          <span class="folder-tab-emoji">📋</span>
-          <span class="folder-tab-label">메모</span>
-        </button>
+        <div class="segmented-control">
+          <button class="folder-tab active" data-folder="home">
+            <span class="folder-tab-emoji">🏠</span>
+            <span class="folder-tab-label">홈</span>
+          </button>
+          <button class="folder-tab" data-folder="work">
+            <span class="folder-tab-emoji">💼</span>
+            <span class="folder-tab-label">업무</span>
+          </button>
+          <button class="folder-tab" data-folder="idea">
+            <span class="folder-tab-emoji">💡</span>
+            <span class="folder-tab-label">아이디어</span>
+          </button>
+          <button class="folder-tab" data-folder="memo">
+            <span class="folder-tab-emoji">📋</span>
+            <span class="folder-tab-label">메모</span>
+          </button>
+        </div>
       </div>
       <div id="item-input-area">
         <input
@@ -71,27 +89,127 @@
           autocomplete="off"
           spellcheck="false"
         />
+        <button id="ai-expand-btn" title="AI 생각확장 — 연관 아이템 추가">확장</button>
+      </div>
+      <div id="ai-expand-status"></div>
+      <div id="monthly-calendar" class="hidden">
+        <div id="cal-header">
+          <button id="cal-prev-btn" class="cal-nav-btn">&#8249;</button>
+          <span id="cal-month-label"></span>
+          <button id="cal-next-btn" class="cal-nav-btn">&#8250;</button>
+        </div>
+        <div id="cal-day-names">
+          <span class="cal-dn sun">일</span>
+          <span class="cal-dn">월</span>
+          <span class="cal-dn">화</span>
+          <span class="cal-dn">수</span>
+          <span class="cal-dn">목</span>
+          <span class="cal-dn">금</span>
+          <span class="cal-dn sat">토</span>
+        </div>
+        <div id="cal-grid"></div>
       </div>
       <div id="item-list-container">
         <div id="item-list"></div>
       </div>
       <div id="archive-btn-area">
-        <button id="archive-btn">아카이브 보기</button>
+        <button id="archive-btn">아카이브</button>
+        <button id="settings-btn" title="설정">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+          </svg>
+        </button>
       </div>
     </div>
   </div>
 
-  <!-- Emoji Picker -->
-  <div class="emoji-picker hidden" id="emoji-picker"></div>
+  <!-- Emoji Popover -->
+  <div id="emoji-popover" class="emoji-popover hidden">
+    <div id="emoji-popover-grid" class="emoji-popover-grid"></div>
+  </div>
 
   <!-- Archive Modal -->
   <div class="modal-backdrop hidden" id="archive-modal">
-    <div class="modal">
+    <div class="modal archive-modal">
       <div class="modal-header">
         <span class="modal-title">아카이브</span>
-        <button class="modal-close" id="archive-modal-close">✕</button>
+        <button class="modal-close" id="archive-modal-close">닫기</button>
+      </div>
+      <div class="archive-search-area">
+        <div class="archive-search-field">
+          <svg class="archive-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input
+            type="search"
+            id="archive-search-input"
+            class="archive-search-input"
+            placeholder="검색"
+            autocomplete="off"
+            spellcheck="false"
+          />
+          <button class="archive-search-clear hidden" id="archive-search-clear" tabindex="-1">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+              <circle cx="12" cy="12" r="10" opacity="0.35"/>
+              <path d="M15 9l-6 6M9 9l6 6" stroke="white" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
       </div>
       <div class="modal-body" id="archive-list"></div>
+    </div>
+  </div>
+
+  <!-- Settings Modal -->
+  <div class="modal-backdrop hidden" id="settings-modal">
+    <div class="modal settings-modal">
+      <div class="modal-header">
+        <span class="modal-title">설정</span>
+        <button class="modal-close" id="settings-modal-close">닫기</button>
+      </div>
+      <div class="settings-body">
+        <div class="settings-section">
+          <div class="settings-section-title">AI 연동</div>
+          <div class="settings-row settings-row-toggle">
+            <label class="settings-label">AI 기능 사용</label>
+            <button class="settings-toggle-btn" id="ai-enabled-toggle" title="AI 기능 켜기/끄기">
+              <span class="pin-toggle-track"><span class="pin-toggle-thumb"></span></span>
+            </button>
+          </div>
+          <div class="settings-row" id="gemini-key-row">
+            <label class="settings-label" for="gemini-api-key-input">Gemini API 키</label>
+
+            <div class="settings-input-wrap">
+              <input
+                type="password"
+                id="gemini-api-key-input"
+                class="settings-input"
+                placeholder="AIzaSy..."
+                autocomplete="off"
+                spellcheck="false"
+              />
+              <button class="settings-eye-btn" id="gemini-api-key-toggle" title="표시/숨기기">
+                <svg id="eye-icon-show" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+                <svg id="eye-icon-hide" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden">
+                  <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+                  <line x1="1" y1="1" x2="23" y2="23"/>
+                </svg>
+              </button>
+            </div>
+            <p class="settings-helper">
+              <a href="#" id="gemini-studio-link">Google AI Studio</a>에서 발급받을 수 있습니다.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="settings-footer">
+        <button class="tab-edit-cancel" id="settings-cancel">취소</button>
+        <button class="tab-edit-confirm" id="settings-save">저장</button>
+      </div>
     </div>
   </div>
 
