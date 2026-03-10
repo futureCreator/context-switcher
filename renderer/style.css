@@ -62,8 +62,8 @@
   --radius-pill: 999px;
 
   /* ── Typography ── */
-  --font-sans: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono: 'Noto Sans KR', 'SF Mono', 'Menlo', 'Monaco', 'Courier New', monospace;
+  --font-sans: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-mono: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
 
   /* ── Motion ── */
   --ease-out:    cubic-bezier(0, 0, 0.2, 1);
@@ -398,6 +398,42 @@ html, body {
 .editor-textarea:disabled {
   color: var(--text-disabled);
   cursor: default;
+}
+
+/* ── Link Highlight Layer ── */
+.editor-link-layer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.editor-link-layer-content {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.8;
+  padding: 16px 20px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: transparent;
+  will-change: transform;
+}
+
+.editor-link-layer-content a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+  cursor: pointer;
+  pointer-events: auto;
+  border-radius: 2px;
+  background: var(--accent-tint);
+  transition: background 0.1s;
+}
+
+.editor-link-layer-content a:hover {
+  background: var(--accent-subtle);
 }
 
 .drag-overlay {

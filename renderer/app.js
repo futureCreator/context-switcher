@@ -68,13 +68,53 @@ function setSaveStatus(n, text, cls, autoClearDelay = 0) {
   }
 }
 
+// ── Link Detection ──────────────────────────────────────────────────────────
+const URL_REGEX = /https?:\/\/[^\s<>"'`)\]]+/g;
+
+function escapeHtml(str) {
+  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function renderLinks(n, text) {
+  const layer = el(`editor-link-layer-${n}`);
+  const content = layer.querySelector('.editor-link-layer-content');
+  let html = '';
+  let lastIndex = 0;
+  URL_REGEX.lastIndex = 0;
+  let match;
+  while ((match = URL_REGEX.exec(text)) !== null) {
+    html += escapeHtml(text.slice(lastIndex, match.index));
+    const url = match[0];
+    html += `<a data-url="${escapeHtml(url)}">${escapeHtml(url)}</a>`;
+    lastIndex = match.index + url.length;
+  }
+  html += escapeHtml(text.slice(lastIndex));
+  content.innerHTML = html;
+}
+
+function setupLinkLayer(n) {
+  const content = el(`editor-link-layer-${n}`).querySelector('.editor-link-layer-content');
+  content.addEventListener('click', e => {
+    const a = e.target.closest('a[data-url]');
+    if (!a) return;
+    e.preventDefault();
+    window.api.openExternal(a.dataset.url);
+  });
+}
+
 // ── Textarea Setup ──────────────────────────────────────────────────────────
 function setupTextarea(n) {
   const ta = el(`editor-textarea-${n}`);
   ta.disabled = true;
 
+  ta.addEventListener('scroll', () => {
+    const content = el(`editor-link-layer-${n}`).querySelector('.editor-link-layer-content');
+    content.style.transform = `translate(${-ta.scrollLeft}px, ${-ta.scrollTop}px)`;
+  });
+
   ta.addEventListener('input', () => {
     const { filename, folder, fromArchive } = state.editors[n];
+    renderLinks(n, ta.value);
     if (!filename || fromArchive) return;
 
     // Sync same file open in the other editor
@@ -83,6 +123,7 @@ function setupTextarea(n) {
         state.editors[other].folder === folder &&
         !state.editors[other].fromArchive) {
       el(`editor-textarea-${other}`).value = ta.value;
+      renderLinks(other, ta.value);
     }
 
     clearTimeout(state.saveTimers[n]);
@@ -430,7 +471,7 @@ function createItemRow(filename) {
 
   renameBtn.addEventListener('click', e => {
     e.stopPropagation();
-    startItemEdit(row, filename);
+    startItemEdit(row, row.dataset.filename);
   });
 
   row.addEventListener('dragstart', e => {
@@ -497,6 +538,8 @@ function clearEditor(n) {
   ta.value = '';
   ta.disabled = true;
 
+  el(`editor-link-layer-${n}`).querySelector('.editor-link-layer-content').innerHTML = '';
+
   el(`editor-filename-${n}`).textContent = '비어있음';
   el(`editor-filename-${n}`).classList.remove('has-file');
 
@@ -541,6 +584,8 @@ async function openInEditor(n, filename, folder, fromArchive) {
   const pane = el(`editor-pane-${n}`);
   pane.classList.remove('is-empty');
   pane.classList.add('has-content');
+
+  renderLinks(n, content);
 
   updateItemActiveStates();
 }
@@ -1126,6 +1171,7 @@ function init() {
     setupFilenameEdit(n);
     setupPinButton(n);
     setupAiOrganizeButton(n);
+    setupLinkLayer(n);
   });
 
   setupAiExpandButton();
