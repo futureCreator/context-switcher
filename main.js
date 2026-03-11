@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, shell } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const https = require('https');
@@ -127,6 +127,8 @@ app.whenReady().then(() => {
   ensureDirs();
 
   // --- IPC Handlers ---
+
+  ipcMain.handle('shell:open-external', (_, url) => shell.openExternal(url));
 
   ipcMain.handle('fs:list-notes',   (_, folder) => listTxtFiles(getFolderDir(folder)));
   ipcMain.handle('fs:list-archive', ()           => listTxtFiles(getArchiveDir()));

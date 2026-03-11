@@ -1,4 +1,4 @@
-const { contextBridge, ipcRenderer, shell } = require('electron');
+const { contextBridge, ipcRenderer } = require('electron');
 
 contextBridge.exposeInMainWorld('api', {
   listNotes:   (folder)                    => ipcRenderer.invoke('fs:list-notes', folder),
@@ -18,5 +18,5 @@ contextBridge.exposeInMainWorld('api', {
   },
   aiOrganize:  (content) => ipcRenderer.invoke('ai:organize', content),
   aiExpand:    (items)   => ipcRenderer.invoke('ai:expand', items),
-  openExternal: (url) => shell.openExternal(url),
+  openExternal: (url) => ipcRenderer.invoke('shell:open-external', url),
 });

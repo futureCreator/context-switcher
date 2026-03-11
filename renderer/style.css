@@ -385,12 +385,16 @@ html, body {
   border: none;
   outline: none;
   resize: none;
+  -webkit-appearance: none;
   background: transparent;
   color: var(--text-primary);
   font-family: var(--font-mono);
   font-size: 13px;
   line-height: 1.8;
   padding: 16px 20px;
+  margin: 0;
+  box-sizing: border-box;
+  overflow-wrap: break-word;
   user-select: text;
   -webkit-user-select: text;
 }
@@ -414,15 +418,18 @@ html, body {
   font-size: 13px;
   line-height: 1.8;
   padding: 16px 20px;
+  box-sizing: border-box;
   white-space: pre-wrap;
-  word-break: break-word;
+  overflow-wrap: break-word;
+  word-break: normal;
   color: transparent;
   will-change: transform;
 }
 
 .editor-link-layer-content a {
-  color: var(--accent);
+  color: transparent;
   text-decoration: underline;
+  text-decoration-color: var(--accent);
   text-decoration-thickness: 1px;
   text-underline-offset: 2px;
   cursor: pointer;

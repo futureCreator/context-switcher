@@ -55,6 +55,11 @@ npm run build
 
 ## Changelog
 
+### v1.1.2 - 2026-03-12
+
+- **보안 수정**: `shell.openExternal` 호출을 renderer/preload에서 main 프로세스 IPC 핸들러로 이동 (Electron 컨텍스트 격리 보안 강화)
+- **에디터 CSS 수정**: textarea `box-sizing`, `overflow-wrap` 레이아웃 개선, 링크 언더라인 렌더링 수정 (텍스트 색상 투명 처리 + accent 색상 언더라인)
+
 ### v1.1.1 - 2026-03-10
 
 - **링크 하이라이트**: 에디터 내 URL을 자동 감지하여 클릭 가능한 링크로 표시
